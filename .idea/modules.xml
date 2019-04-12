@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Teaching-HEIGVD-RES-2019-Labo-SMTP.iml" filepath="$PROJECT_DIR$/Teaching-HEIGVD-RES-2019-Labo-SMTP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config.iml" filepath="$PROJECT_DIR$/config.iml" />
     </modules>
   </component>
 </project>
