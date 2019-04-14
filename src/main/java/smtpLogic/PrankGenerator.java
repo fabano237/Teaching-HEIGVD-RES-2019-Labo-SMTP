@@ -1,0 +1,91 @@
+package smtpLogic;
+
+import configurationData.ConfigManagerInterface;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Logger;
+import smtpLogic.*;
+
+
+public class PrankGenerator {
+
+    private ConfigManagerInterface configManager;
+
+    private static final Logger LOG = Logger.getLogger(PrankGenerator.class.getName());
+    public PrankGenerator(ConfigManagerInterface configManager){
+        this.configManager = configManager;
+
+    }
+
+    public List<Group> generateGroups(List<Person> victims, int numberOfGroups) {
+        List<Person> availableVictims = new ArrayList(victims);
+        Collections.shuffle(availableVictims);
+        List<Group> groups = new ArrayList<Group>();
+
+        for (int i=0; i< numberOfGroups; i++) {
+            Group group = new Group();
+            groups.add(group);
+        }
+
+        int turn = 0;
+        Group targetGroup;
+        while (availableVictims.size() > 0) {
+            targetGroup = groups.get(turn);
+            turn = (turn + 1) % groups.size();
+            Person victim = availableVictims.remove(0);
+            targetGroup.addMember(victim) ;
+        }
+
+        return groups;
+    }
+
+    public List<Prank> generatePranks(){
+        List<Prank> pranks = new ArrayList<Prank>();
+
+        List<String> messages = configManager.getMessages();
+        List<Person> victims = configManager.getVictims();
+        int numberOfGroups = configManager.getNumberOfGroup();
+        int numberOfVictims = victims.size();
+
+        if( numberOfVictims / numberOfGroups < 3){
+            numberOfGroups = numberOfVictims / 3;
+            LOG.warning("Not enough victims for the number of group set. victims"+ numberOfVictims + "Group generated: " + numberOfGroups);
+        }
+
+        List<Group> groups = generateGroups(victims, numberOfGroups);
+
+        int iMessage = 0;
+        Random random = new Random();
+        for(Group group : groups){
+            Prank prank = new Prank();
+
+            List<Person> members = group.getMembers();
+            Collections.shuffle(members);
+            Person sender = members.remove(0);
+            prank.setSenderVictim(sender);
+            prank.addVictimRecipients(members);
+
+            prank.addWitnessRecipients(configManager.getWitnessToCC());
+
+            iMessage = random.nextInt(messages.size() / 2) * 2;
+            String subject = messages.get(iMessage);
+            String message = messages.get(iMessage + 1);
+
+            message += "\r\n" + sender.getFirstName();
+            prank.setMessageSubject(subject);
+
+            prank.setMessageBody(message);
+
+            pranks.add(prank);
+
+        }
+
+        return pranks;
+    }
+
+
+
+}
