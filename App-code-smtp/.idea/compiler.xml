@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="App-code-smtp" />
         <module name="Teaching-HEIGVD-RES-2019-Labo-SMTP" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="App-code-smtp" target="1.8" />
       <module name="Teaching-HEIGVD-RES-2019-Labo-SMTP" target="1.5" />
     </bytecodeTargetLevel>
   </component>

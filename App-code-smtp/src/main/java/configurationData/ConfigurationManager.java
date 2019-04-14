@@ -45,7 +45,7 @@ public class ConfigurationManager implements ConfigManagerInterface{
     }
 
     public List<Person> getWitnessToCC(){
-        List<Person> returnvalues = new ArrayList();
+        List<Person> returnvalues = new ArrayList<Person>();
         String valueToParse = witnessestoCC;
         while(valueToParse.indexOf(",") > -1){
             returnvalues.add(parsePersonFromEmail(valueToParse.substring(0, valueToParse.indexOf(","))));
@@ -89,7 +89,7 @@ public class ConfigurationManager implements ConfigManagerInterface{
     }
 
     public  List<Person> getVictims(){
-        List<Person> returnValue = new ArrayList<Person>();
+        List<Person> returnValue = new ArrayList<>();
 
         try {
             BufferedReader bReader = new BufferedReader(new InputStreamReader(new FileInputStream("victims.utf8"), "UTF-8"));
